@@ -1,0 +1,11 @@
+confluent-kafka
+fhir.resources>=7.0.0
+fastapi
+uvicorn[standard]
+sqlalchemy
+psycopg2-binary
+pydantic
+pydantic-settings
+requests
+pandas
+numpy
