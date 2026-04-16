@@ -1,13 +1,13 @@
 import json
 import os
 from confluent_kafka import Consumer, KafkaError
-from fhir.resources.observation import Observation
+from fhir.resources.observation import Observation, ObservationComponent
 from fhir.resources.codeableconcept import CodeableConcept
 from fhir.resources.coding import Coding
 from fhir.resources.quantity import Quantity
 from fhir.resources.reference import Reference
 from datetime import datetime
-
+import uuid
 import sys
 
 # Configuration
@@ -39,7 +39,19 @@ def create_heart_rate_observation(data):
     """Creates an FHIR Observation resource for Heart Rate."""
     try:
         obs = Observation(
+            id=str(uuid.uuid4()),
             status="final",
+            category=[
+                CodeableConcept(
+                    coding=[
+                        Coding(
+                            system="http://terminology.hl7.org/CodeSystem/observation-category",
+                            code="vital-signs",
+                            display="Vital Signs"
+                        )
+                    ]
+                )
+            ],
             code=CodeableConcept(
                 coding=[
                     Coding(
@@ -62,6 +74,106 @@ def create_heart_rate_observation(data):
         return obs
     except Exception as e:
         print(f"Error creating Observation: {e}")
+        return None
+
+def create_spo2_observation(data):
+    """Creates an FHIR Observation resource for SpO2."""
+    try:
+        obs = Observation(
+            id=str(uuid.uuid4()),
+            status="final",
+            category=[
+                CodeableConcept(
+                    coding=[
+                        Coding(
+                            system="http://terminology.hl7.org/CodeSystem/observation-category",
+                            code="vital-signs",
+                            display="Vital Signs"
+                        )
+                    ]
+                )
+            ],
+            code=CodeableConcept(
+                coding=[
+                    Coding(
+                        system="http://loinc.org",
+                        code="59408-5",
+                        display="Oxygen saturation in Arterial blood"
+                    )
+                ]
+            ),
+            subject=Reference(reference=f"Patient/{data['patient_id']}"),
+            effectiveDateTime=data['timestamp'],
+            valueQuantity=Quantity(
+                value=data['spo2'],
+                unit="%",
+                system="http://unitsofmeasure.org",
+                code="%"
+            ),
+            device=Reference(display=data['device_id'])
+        )
+        return obs
+    except Exception as e:
+        print(f"Error creating SpO2 Observation: {e}")
+        return None
+
+def create_blood_pressure_observation(data):
+    """Creates an FHIR Observation resource for Blood Pressure."""
+    try:
+        obs = Observation(
+            id=str(uuid.uuid4()),
+            status="final",
+            category=[
+                CodeableConcept(
+                    coding=[
+                        Coding(
+                            system="http://terminology.hl7.org/CodeSystem/observation-category",
+                            code="vital-signs",
+                            display="Vital Signs"
+                        )
+                    ]
+                )
+            ],
+            code=CodeableConcept(
+                coding=[
+                    Coding(
+                        system="http://loinc.org",
+                        code="85354-9",
+                        display="Blood pressure panel with all children optional"
+                    )
+                ]
+            ),
+            subject=Reference(reference=f"Patient/{data['patient_id']}"),
+            effectiveDateTime=data['timestamp'],
+            device=Reference(display=data['device_id']),
+            component=[
+                ObservationComponent(
+                    code=CodeableConcept(
+                        coding=[Coding(system="http://loinc.org", code="8480-6", display="Systolic blood pressure")]
+                    ),
+                    valueQuantity=Quantity(
+                        value=data['blood_pressure_systolic'],
+                        unit="mmHg",
+                        system="http://unitsofmeasure.org",
+                        code="mm[Hg]"
+                    )
+                ),
+                ObservationComponent(
+                    code=CodeableConcept(
+                        coding=[Coding(system="http://loinc.org", code="8462-4", display="Diastolic blood pressure")]
+                    ),
+                    valueQuantity=Quantity(
+                        value=data['blood_pressure_diastolic'],
+                        unit="mmHg",
+                        system="http://unitsofmeasure.org",
+                        code="mm[Hg]"
+                    )
+                )
+            ]
+        )
+        return obs
+    except Exception as e:
+        print(f"Error creating BP Observation: {e}")
         return None
 
 def run_worker():
@@ -89,9 +201,18 @@ def run_worker():
             flush_print(f"Received: {raw_data}")
             
             # Transform to FHIR
-            fhir_obs = create_heart_rate_observation(raw_data)
+            observations_to_save = []
             
-            if fhir_obs:
+            hr_obs = create_heart_rate_observation(raw_data)
+            if hr_obs: observations_to_save.append(("8867-4", hr_obs))
+            
+            spo2_obs = create_spo2_observation(raw_data)
+            if spo2_obs: observations_to_save.append(("59408-5", spo2_obs))
+            
+            bp_obs = create_blood_pressure_observation(raw_data)
+            if bp_obs: observations_to_save.append(("85354-9", bp_obs))
+            
+            for code, fhir_obs in observations_to_save:
                 flush_print(f"Generated FHIR Resource: {fhir_obs.json()}")
                 
                 # Save to Database
@@ -102,16 +223,17 @@ def run_worker():
                     db_obs = FHIRObservation(
                         resource_id=fhir_obs.id, 
                         patient_id=raw_data['patient_id'],
-                        code="8867-4", 
+                        code=code, 
                         effective_datetime=raw_data['timestamp'],
                         resource_json=json.loads(fhir_obs.json())
                     )
                     db.add(db_obs)
                     db.commit()
-                    flush_print(f"Saved Observation for Patient {raw_data['patient_id']}")
-                    db.close()
+                    flush_print(f"Saved Observation {code} for Patient {raw_data['patient_id']}")
                 except Exception as db_err:
                     flush_print(f"Database Error: {db_err}")
+                finally:
+                    db.close()
             
     except KeyboardInterrupt:
         print("Worker stopped.")

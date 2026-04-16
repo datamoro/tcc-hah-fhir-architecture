@@ -1,0 +1,78 @@
+[2026-04-15 15:37:47,682 INFO root] Taurus CLI Tool v1.16.49
+[2026-04-15 15:37:47,682 DEBUG root] Build: 14839 Mon Feb 23 09:22:00 UTC 2026
+[2026-04-15 15:37:47,682 DEBUG root] Extended git info:  e61b1994 Release 1.16.49
+[2026-04-15 15:37:47,682 DEBUG root] Command-line options: {'log': '/var/folders/ds/b97807_10ln8_523rdhl4px40000gp/T/bzt_hmt5we9e.log', 'option': None, 'quiet': None, 'verbose': None, 'no_system_configs': None, 'aliases': []}
+[2026-04-15 15:37:47,682 DEBUG root] Python: CPython 3.9.6
+[2026-04-15 15:37:47,682 DEBUG root] OS: uname_result(system='Darwin', node='iMac.local', release='25.2.0', version='Darwin Kernel Version 25.2.0: Tue Nov 18 21:08:48 PST 2025; root:xnu-12377.61.12~1/RELEASE_ARM64_T8132', machine='arm64')
+[2026-04-15 15:37:47,682 DEBUG root] Path to interpreter: /private/tmp/tcc_venv/bin/python3
+[2026-04-15 15:37:47,682 DEBUG root] Path to packages: ['/private/tmp/tcc_venv/bin', '/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python39.zip', '/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9', '/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/lib-dynload', '/private/tmp/tcc_venv/lib/python3.9/site-packages', '/private/tmp/tcc_venv/lib/python3.9/site-packages/setuptools/_vendor']
+[2026-04-15 15:37:47,682 DEBUG root] Default python: /tmp/tcc_venv/bin/python
+[2026-04-15 15:37:47,682 DEBUG root] Default python3: /tmp/tcc_venv/bin/python3
+[2026-04-15 15:37:47,682 DEBUG root] Adding JMX shorthand config for: ['tests/stress_test.jmx']
+[2026-04-15 15:37:47,683 DEBUG root] Dumping JSON config into /var/folders/ds/b97807_10ln8_523rdhl4px40000gp/T/jmx_xutqnnfr.json
+[2026-04-15 15:37:47,683 DEBUG root] Adding personal config: /Users/caiomoro/.bzt-rc
+[2026-04-15 15:37:47,683 INFO root] No personal config found, creating one at /Users/caiomoro/.bzt-rc
+[2026-04-15 15:37:47,683 INFO root] Starting with configs: ['/Users/caiomoro/.bzt-rc', '/var/folders/ds/b97807_10ln8_523rdhl4px40000gp/T/jmx_xutqnnfr.json']
+[2026-04-15 15:37:47,683 INFO Engine] Configuring...
+[2026-04-15 15:37:47,693 DEBUG Engine] Base configs list: ['/private/tmp/tcc_venv/lib/python3.9/site-packages/bzt/resources/10-base-config.yml']
+[2026-04-15 15:37:47,693 DEBUG Engine.Configuration] Configs: ['/private/tmp/tcc_venv/lib/python3.9/site-packages/bzt/resources/10-base-config.yml']
+[2026-04-15 15:37:47,693 DEBUG Engine.Configuration] Reading /private/tmp/tcc_venv/lib/python3.9/site-packages/bzt/resources/10-base-config.yml as YAML
+[2026-04-15 15:37:47,702 DEBUG Engine] User configs list: ['/Users/caiomoro/.bzt-rc', '/var/folders/ds/b97807_10ln8_523rdhl4px40000gp/T/jmx_xutqnnfr.json']
+[2026-04-15 15:37:47,702 DEBUG Engine.Configuration] Configs: ['/Users/caiomoro/.bzt-rc', '/var/folders/ds/b97807_10ln8_523rdhl4px40000gp/T/jmx_xutqnnfr.json']
+[2026-04-15 15:37:47,702 DEBUG Engine.Configuration] Reading /Users/caiomoro/.bzt-rc as YAML
+[2026-04-15 15:37:47,703 DEBUG Engine.Configuration] Reading /var/folders/ds/b97807_10ln8_523rdhl4px40000gp/T/jmx_xutqnnfr.json as YAML
+[2026-04-15 15:37:47,704 DEBUG Engine.Configuration] Configs: ['/Users/caiomoro/.bzt-rc', '/var/folders/ds/b97807_10ln8_523rdhl4px40000gp/T/jmx_xutqnnfr.json']
+[2026-04-15 15:37:47,704 DEBUG Engine.Configuration] Reading /Users/caiomoro/.bzt-rc as YAML
+[2026-04-15 15:37:47,705 DEBUG Engine.Configuration] Reading /var/folders/ds/b97807_10ln8_523rdhl4px40000gp/T/jmx_xutqnnfr.json as YAML
+[2026-04-15 15:37:47,705 INFO HTTPClient] Proxy settings not set
+[2026-04-15 15:37:47,706 DEBUG Engine] Requesting updates info: https://gettaurus.org/updates/?version=1.16.49&installID=macos-c6dc3bb40672
+[2026-04-15 15:37:47,706 DEBUG HTTPClient] Making HTTP request GET https://gettaurus.org/updates/?version=1.16.49&installID=macos-c6dc3bb40672
+[2026-04-15 15:37:47,706 INFO Engine] Artifacts dir: /Users/caiomoro/Documents/TCC Engenharia de Software/tcc-hah-fhir-architecture/2026-04-15_15-37-47.706177
+[2026-04-15 15:37:47,706 DEBUG Engine] New artifact filename: /Users/caiomoro/Documents/TCC Engenharia de Software/tcc-hah-fhir-architecture/2026-04-15_15-37-47.706177/effective
+[2026-04-15 15:37:47,707 DEBUG Engine.Configuration] Dumping YAML config into /Users/caiomoro/Documents/TCC Engenharia de Software/tcc-hah-fhir-architecture/2026-04-15_15-37-47.706177/effective.yml
+[2026-04-15 15:37:47,712 DEBUG Engine.Configuration] Dumping JSON config into /Users/caiomoro/Documents/TCC Engenharia de Software/tcc-hah-fhir-architecture/2026-04-15_15-37-47.706177/effective.json
+[2026-04-15 15:37:47,713 DEBUG Engine] New artifact filename: /Users/caiomoro/Documents/TCC Engenharia de Software/tcc-hah-fhir-architecture/2026-04-15_15-37-47.706177/merged.yml
+[2026-04-15 15:37:47,713 DEBUG Engine.Configuration] Dumping YAML config into /Users/caiomoro/Documents/TCC Engenharia de Software/tcc-hah-fhir-architecture/2026-04-15_15-37-47.706177/merged.yml
+[2026-04-15 15:37:47,713 DEBUG Engine] New artifact filename: /Users/caiomoro/Documents/TCC Engenharia de Software/tcc-hah-fhir-architecture/2026-04-15_15-37-47.706177/merged.json
+[2026-04-15 15:37:47,713 DEBUG Engine.Configuration] Dumping JSON config into /Users/caiomoro/Documents/TCC Engenharia de Software/tcc-hah-fhir-architecture/2026-04-15_15-37-47.706177/merged.json
+[2026-04-15 15:37:47,713 DEBUG Engine] Add existing artifact (move=False): /Users/caiomoro/.bzt-rc
+[2026-04-15 15:37:47,713 DEBUG Engine] Copying /Users/caiomoro/.bzt-rc to /Users/caiomoro/Documents/TCC Engenharia de Software/tcc-hah-fhir-architecture/2026-04-15_15-37-47.706177/.bzt-rc
+[2026-04-15 15:37:47,713 DEBUG Engine] Add existing artifact (move=False): /var/folders/ds/b97807_10ln8_523rdhl4px40000gp/T/jmx_xutqnnfr.json
+[2026-04-15 15:37:47,713 DEBUG Engine] Copying /var/folders/ds/b97807_10ln8_523rdhl4px40000gp/T/jmx_xutqnnfr.json to /Users/caiomoro/Documents/TCC Engenharia de Software/tcc-hah-fhir-architecture/2026-04-15_15-37-47.706177/jmx_xutqnnfr.json
+[2026-04-15 15:37:47,714 DEBUG Engine] Set PYTHONPATH to :
+	CURRENT: '' +
+	TEMP: '/Users/caiomoro/Documents/TCC Engenharia de Software/tcc-hah-fhir-architecture/2026-04-15_15-37-47.706177/python-packages/3.9.6' +
+	USER: '/Users/caiomoro/.bzt/python-packages/3.9.6'
+[2026-04-15 15:37:47,714 DEBUG Engine] Content of user packages dir: []
+[2026-04-15 15:37:47,714 DEBUG Engine] OS env: OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+[2026-04-15 15:37:47,714 DEBUG Engine] OS env: TAURUS_ARTIFACTS_DIR=/Users/caiomoro/Documents/TCC Engenharia de Software/tcc-hah-fhir-architecture/2026-04-15_15-37-47.706177
+[2026-04-15 15:37:47,714 DEBUG root] Closing log handler: /var/folders/ds/b97807_10ln8_523rdhl4px40000gp/T/bzt_hmt5we9e.log
+[2026-04-15 15:37:47,714 DEBUG root] Switched writing logs to /Users/caiomoro/Documents/TCC Engenharia de Software/tcc-hah-fhir-architecture/2026-04-15_15-37-47.706177/bzt.log
+[2026-04-15 15:37:47,714 DEBUG root] Linting config
+[2026-04-15 15:37:47,715 INFO Engine] Preparing...
+[2026-04-15 15:37:47,716 DEBUG Engine] Module config: consolidator {'class': 'bzt.modules.aggregator.ConsolidatingAggregator'}
+[2026-04-15 15:37:47,716 DEBUG root] Importing module: bzt.modules.aggregator
+[2026-04-15 15:37:47,969 DEBUG urllib3.connectionpool] Starting new HTTPS connection (1): gettaurus.org:443
+[2026-04-15 15:37:48,774 ERROR root] ModuleNotFoundError: No module named 'urwid.decoration'
+  File "/private/tmp/tcc_venv/lib/python3.9/site-packages/bzt/cli.py", line 275, in perform
+    self.engine.prepare()
+  File "/private/tmp/tcc_venv/lib/python3.9/site-packages/bzt/engine/engine.py", line 218, in prepare
+    self.__prepare_aggregator()
+  File "/private/tmp/tcc_venv/lib/python3.9/site-packages/bzt/engine/engine.py", line 712, in __prepare_aggregator
+    self.aggregator = self.instantiate_module(cls)
+  File "/private/tmp/tcc_venv/lib/python3.9/site-packages/bzt/engine/engine.py", line 499, in instantiate_module
+    classobj = self.__load_module(alias)
+  File "/private/tmp/tcc_venv/lib/python3.9/site-packages/bzt/engine/engine.py", line 484, in __load_module
+    self.modules[alias] = load_class(clsname)
+  File "/private/tmp/tcc_venv/lib/python3.9/site-packages/bzt/utils.py", line 1009, in load_class
+    module = __import__(module_name)
+  File "/private/tmp/tcc_venv/lib/python3.9/site-packages/bzt/modules/__init__.py", line 24, in <module>
+    from bzt.modules.console import ExecutorWidget
+  File "/private/tmp/tcc_venv/lib/python3.9/site-packages/bzt/modules/console.py", line 33, in <module>
+    from urwid.decoration import Padding
+[2026-04-15 15:37:48,774 INFO Engine] Post-processing...
+[2026-04-15 15:37:48,775 DEBUG Engine.Configuration] Dumping YAML config into /Users/caiomoro/Documents/TCC Engenharia de Software/tcc-hah-fhir-architecture/2026-04-15_15-37-47.706177/effective.yml
+[2026-04-15 15:37:48,782 DEBUG Engine.Configuration] Dumping JSON config into /Users/caiomoro/Documents/TCC Engenharia de Software/tcc-hah-fhir-architecture/2026-04-15_15-37-47.706177/effective.json
+[2026-04-15 15:37:48,782 INFO root] Artifacts dir: /Users/caiomoro/Documents/TCC Engenharia de Software/tcc-hah-fhir-architecture/2026-04-15_15-37-47.706177
+[2026-04-15 15:37:48,782 WARNING root] Done performing with code: 1
+[2026-04-15 15:37:48,782 DEBUG root] Closing log handler: /Users/caiomoro/Documents/TCC Engenharia de Software/tcc-hah-fhir-architecture/2026-04-15_15-37-47.706177/bzt.log

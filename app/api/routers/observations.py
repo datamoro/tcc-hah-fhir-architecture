@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from app.api import auth
 from sqlalchemy.orm import Session
 from app.shared.database import get_engine, SessionLocal, FHIRObservation
 from typing import List, Optional
@@ -17,7 +18,8 @@ def get_db():
 def search_observations(
     patient: Optional[str] = None,
     code: Optional[str] = None,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    token_payload: dict = Depends(auth.verify_token)
 ):
     query = db.query(FHIRObservation)
     

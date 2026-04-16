@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from app.api.routers import observations
+from app.api import auth
 from app.shared.database import init_db
 
 app = FastAPI(
@@ -17,6 +18,7 @@ def on_startup():
 def read_root():
     return {"status": "online", "service": "Hospital-at-Home API"}
 
+app.include_router(auth.router, prefix="/auth", tags=["Security / SMART on FHIR"])
 app.include_router(observations.router, prefix="/fhir", tags=["Observations"])
 
 if __name__ == "__main__":

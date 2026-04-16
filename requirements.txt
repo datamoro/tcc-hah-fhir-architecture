@@ -9,3 +9,8 @@ pydantic-settings
 requests
 pandas
 numpy
+PyJWT
+passlib
+bcrypt
+python-multipart
+python-jose[cryptography]

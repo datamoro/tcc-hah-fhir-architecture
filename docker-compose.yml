@@ -42,7 +42,6 @@ services:
     volumes:
       - timescaledb_data:/var/lib/postgresql/data
 
-  # Optional: Kafka UI for easier monitoring
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
     container_name: tcc_kafka_ui
@@ -52,6 +51,46 @@ services:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
       KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+    depends_on:
+      - kafka
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: tcc_api_fastapi
+    ports:
+      - "8000:8000"
+    environment:
+      POSTGRES_HOST: timescaledb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: tcc_health
+    depends_on:
+      - timescaledb
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: tcc_fhir_worker
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: 'kafka:29092'
+      POSTGRES_HOST: timescaledb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: tcc_health
+    depends_on:
+      - kafka
+      - timescaledb
+
+  producer:
+    build:
+      context: .
+      dockerfile: Dockerfile.producer
+    container_name: tcc_data_producer
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: 'kafka:29092'
     depends_on:
       - kafka
 
