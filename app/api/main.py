@@ -6,12 +6,11 @@ from app.shared.database import init_db
 app = FastAPI(
     title="Hospital-at-Home FHIR API",
     description="API for accessing physiological data in FHIR format.",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 @app.on_event("startup")
 def on_startup():
-    # Initialize database tables
     init_db()
 
 @app.get("/")
@@ -23,4 +22,4 @@ app.include_router(observations.router, prefix="/fhir", tags=["Observations"])
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000, workers=4)

@@ -2,7 +2,7 @@ import json
 import time
 import random
 import os
-from kafka import KafkaProducer
+from confluent_kafka import Producer
 from datetime import datetime, timezone
 
 # Configuration
@@ -10,12 +10,9 @@ KAFKA_BOOTSTRAP_SERVERS = os.getenv('KAFKA_BOOTSTRAP_SERVERS', 'localhost:9092')
 TOPIC_NAME = 'raw-sensor-data'
 
 def create_producer():
-    """Creates and returns a KafkaProducer instance."""
+    """Creates and returns a Confluent Kafka Producer instance."""
     try:
-        producer = KafkaProducer(
-            bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS,
-            value_serializer=lambda v: json.dumps(v).encode('utf-8')
-        )
+        producer = Producer({'bootstrap.servers': KAFKA_BOOTSTRAP_SERVERS})
         print(f"Connected to Kafka at {KAFKA_BOOTSTRAP_SERVERS}")
         return producer
     except Exception as e:
@@ -47,14 +44,16 @@ def run_simulation():
         while True:
             for pid in patient_ids:
                 data = generate_vital_signs(pid)
-                producer.send(TOPIC_NAME, data)
+                producer.produce(TOPIC_NAME, json.dumps(data).encode('utf-8'))
+                producer.poll(0)
                 print(f"Sent: {data}")
-            
-            time.sleep(1) # Simulate 1 second interval
+
+            time.sleep(1)  # Simulate 1 second interval
     except KeyboardInterrupt:
         print("Simulation stopped.")
     finally:
-        producer.close()
+        producer.flush()
+        print("Producer closed.")
 
 if __name__ == "__main__":
     run_simulation()

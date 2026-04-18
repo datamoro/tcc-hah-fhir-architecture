@@ -1,8 +1,10 @@
 confluent-kafka
+orjson
 fhir.resources>=7.0.0
 fastapi
 uvicorn[standard]
-sqlalchemy
+sqlalchemy[asyncio]
+asyncpg
 psycopg2-binary
 pydantic
 pydantic-settings

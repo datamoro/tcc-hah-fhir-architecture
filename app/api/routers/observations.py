@@ -1,37 +1,42 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
+from fastapi.responses import ORJSONResponse
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
+from typing import Optional
+
 from app.api import auth
-from sqlalchemy.orm import Session
-from app.shared.database import get_engine, SessionLocal, FHIRObservation
-from typing import List, Optional
+from app.shared.database import AsyncSessionLocal, FHIRObservation
 
 router = APIRouter()
 
-# Dependency
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+
+async def get_db() -> AsyncSession:
+    async with AsyncSessionLocal() as session:
+        yield session
+
 
 @router.get("/Observation")
-def search_observations(
+async def search_observations(
     patient: Optional[str] = None,
-    code: Optional[str] = None,
-    db: Session = Depends(get_db),
-    token_payload: dict = Depends(auth.verify_token)
+    code:    Optional[str] = None,
+    db:      AsyncSession  = Depends(get_db),
+    _:       dict          = Depends(auth.verify_token),
 ):
-    query = db.query(FHIRObservation)
-    
+    stmt = select(FHIRObservation)
+
     if patient:
-        # Check if patient param includes "Patient/" prefix
         patient_id = patient.split('/')[-1] if '/' in patient else patient
-        query = query.filter(FHIRObservation.patient_id == patient_id)
-    
+        stmt = stmt.where(FHIRObservation.patient_id == patient_id)
+
     if code:
-        query = query.filter(FHIRObservation.code == code)
-        
-    results = query.limit(100).all()
-    
-    # Return list of FHIR resources (JSON)
-    return [res.resource_json for res in results]
+        stmt = stmt.where(FHIRObservation.code == code)
+
+    stmt = stmt.order_by(FHIRObservation.effective_datetime.desc()).limit(100)
+
+    result = await db.execute(stmt)
+    rows = result.scalars().all()
+
+    # Return ORJSONResponse directly: bypasses jsonable_encoder and Pydantic
+    # validation entirely. Safe because resource_json is already a JSON-compatible
+    # Python dict validated by fhir.resources at write time.
+    return ORJSONResponse(content=[row.resource_json for row in rows])
