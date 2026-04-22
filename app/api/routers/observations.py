@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends
-from fastapi.responses import ORJSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from typing import Optional
+from typing import Any, List, Optional
 
 from app.api import auth
 from app.shared.database import AsyncSessionLocal, FHIRObservation
@@ -15,7 +14,7 @@ async def get_db() -> AsyncSession:
         yield session
 
 
-@router.get("/Observation")
+@router.get("/Observation", response_model=List[Any])
 async def search_observations(
     patient: Optional[str] = None,
     code:    Optional[str] = None,
@@ -36,7 +35,4 @@ async def search_observations(
     result = await db.execute(stmt)
     rows = result.scalars().all()
 
-    # Return ORJSONResponse directly: bypasses jsonable_encoder and Pydantic
-    # validation entirely. Safe because resource_json is already a JSON-compatible
-    # Python dict validated by fhir.resources at write time.
-    return ORJSONResponse(content=[row.resource_json for row in rows])
+    return [row.resource_json for row in rows]

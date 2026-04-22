@@ -24,7 +24,7 @@ Sensor Simulado → Apache Kafka → FHIR Worker → TimescaleDB → FastAPI →
 | **Broker** | Apache Kafka 7.5.0 | Desacopla ingestão e transformação |
 | **Worker** | Python + fhir.resources | Mapeia sinais brutos → FHIR R5 Observation (LOINC) |
 | **Banco** | TimescaleDB pg14 | Hypertable particionada por effective_datetime |
-| **API** | FastAPI + asyncpg | 8 workers Uvicorn, endpoint async, ORJSONResponse |
+| **API** | FastAPI + asyncpg | 8 workers Uvicorn, endpoint async, serialização nativa FastAPI |
 | **Auth** | JWT Bearer (SMART on FHIR mock) | Escopo patient/*.read obrigatório |
 
 ### Sinais Vitais Mapeados
@@ -106,7 +106,7 @@ O pipeline de CI (GitHub Actions) executa a suíte completa a cada push com Time
 app/
   ingestion/       # Producer Kafka (confluent-kafka)
   transformation/  # FHIR Worker (fhir.resources + asyncpg)
-  api/             # FastAPI Gateway (async, ORJSONResponse, JWT)
+  api/             # FastAPI Gateway (async, JWT)
   shared/          # Engine síncrona (worker) + assíncrona (API)
 tests/
   unit/            # Pytest: transformação FHIR + autenticação API
