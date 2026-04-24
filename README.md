@@ -56,7 +56,7 @@ Serviços disponíveis após ~30s:
 
 ```bash
 curl -X POST http://localhost:8000/auth/token \
-  -d "username=clinician&password=supersecure"
+  -d "username=<username>&password=<password>"
 ```
 
 Use o `access_token` retornado como Bearer no header `Authorization`.
@@ -111,9 +111,6 @@ app/
 tests/
   unit/            # Pytest: transformação FHIR + autenticação API
   run_jmeter_mock.py  # Script de carga (500 threads)
-docs/
-  Projeto_Executivo.md
-  Otimizacao_Performance_API.md  # Guia de estudo sobre arquitetura async
 ```
 
 ---

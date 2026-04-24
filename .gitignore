@@ -38,3 +38,5 @@ env/
 Thumbs.db
 tests/results.csv
 results.csv
+docs/
+Template/
