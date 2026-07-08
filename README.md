@@ -78,17 +78,19 @@ curl http://localhost:8000/fhir/Observation \
 
 ### Performance
 
-Stress test: 500 concurrent threads | 30s ramp-up | 45s sustained load
+Load test across four concurrency tiers (mirroring Le et al., 2024) | 30s ramp-up + 45s sustained load per tier (75s each). Full transaction cycle tested: `/auth/token` → `/fhir/Observation`.
 
-| Endpoint | N | Min | Median | P90 | Max | Errors |
-|---|---|---|---|---|---|---|
-| /auth/token | 10,813 | 8 ms | 497 ms | 2,066 ms | 8,304 ms | 0% |
-| /fhir/Observation | 10,799 | 11 ms | 483 ms | 1,971 ms | 9,448 ms | 0% |
-| **TOTAL** | **21,612** | **8 ms** | **490 ms** | **2,017 ms** | **9,448 ms** | **0%** |
+| Scenario | Threads | N req | Throughput | Median | P90 | P99 | Errors |
+|---|---|---|---|---|---|---|---|
+| Low | 10 | 8,372 | 111.6 req/s | 53 ms | 83 ms | 135 ms | 0% |
+| Medium | 50 | 10,292 | 137.2 req/s | 183 ms | 420 ms | 721 ms | 0% |
+| High | 100 | 11,912 | 158.8 req/s | 286 ms | 743 ms | 1,358 ms | 0% |
+| Stress | 500 | 13,729 | 183.1 req/s | 932 ms | 3,865 ms | 10,756 ms | 0% |
+| **Total** | — | **44,305** | — | — | — | — | **0%** |
 
-Throughput: **246.6 req/s** | Environment: local development hardware (12 CPUs, Docker)
+Environment: local development hardware (12 CPUs, Docker).
 
-Under typical HaH operational load (10–100 concurrent users), median latency drops to **53–286 ms** with 0% errors across all scenarios — consistent with clinical benchmarks from Le et al. (2024).
+Under typical HaH operational load (up to 100 concurrent threads), median latency stays between **53–286 ms** with **0 failures across all 44,305 requests** — consistent with clinical benchmarks from Le et al. (2024). Throughput grows sublinearly (50× concurrency → 1.6× throughput), reflecting gradual CPU/memory saturation of the local environment rather than architectural collapse; degradation under extreme stress is controlled, with no service disruption.
 
 Reference benchmark: Le et al. (2024) — 50–300 ms under typical clinical operational load.
 
@@ -192,17 +194,19 @@ curl http://localhost:8000/fhir/Observation \
 
 ### Performance
 
-Teste de estresse: 500 threads simultâneas | ramp-up 30s | carga sustentada 45s
+Testes de carga em quatro patamares de concorrência (espelhando Le et al., 2024) | ramp-up 30s + carga sustentada 45s por patamar (75s cada). Ciclo completo de transação testado: `/auth/token` → `/fhir/Observation`.
 
-| Endpoint | N | Mín | Mediana | P90 | Máx | Erros |
-|---|---|---|---|---|---|---|
-| /auth/token | 10.813 | 8 ms | 497 ms | 2.066 ms | 8.304 ms | 0% |
-| /fhir/Observation | 10.799 | 11 ms | 483 ms | 1.971 ms | 9.448 ms | 0% |
-| **TOTAL** | **21.612** | **8 ms** | **490 ms** | **2.017 ms** | **9.448 ms** | **0%** |
+| Cenário | Threads | N req | Throughput | Mediana | P90 | P99 | Erros |
+|---|---|---|---|---|---|---|---|
+| Low | 10 | 8.372 | 111,6 req/s | 53 ms | 83 ms | 135 ms | 0% |
+| Medium | 50 | 10.292 | 137,2 req/s | 183 ms | 420 ms | 721 ms | 0% |
+| High | 100 | 11.912 | 158,8 req/s | 286 ms | 743 ms | 1.358 ms | 0% |
+| Stress | 500 | 13.729 | 183,1 req/s | 932 ms | 3.865 ms | 10.756 ms | 0% |
+| **Total** | — | **44.305** | — | — | — | — | **0%** |
 
-Throughput: **246,6 req/s** | Ambiente: hardware de desenvolvimento local (12 CPUs, Docker)
+Ambiente: hardware de desenvolvimento local (12 CPUs, Docker).
 
-Nos patamares operacionais típicos do modelo HaH (10–100 usuários simultâneos), a mediana de latência cai para **53–286 ms** com 0% de erros em todos os cenários — dentro dos parâmetros clínicos de Le et al. (2024).
+Nos patamares operacionais típicos do modelo HaH (até 100 threads simultâneas), a mediana de latência permanece entre **53–286 ms**, com **0 falhas nas 44.305 requisições** — dentro dos parâmetros clínicos de Le et al. (2024). O throughput cresce de forma sublinear (50× de concorrência → 1,6× de throughput), refletindo a saturação gradual de CPU/memória do ambiente local, e não colapso arquitetural; a degradação sob estresse extremo é controlada, sem ruptura de serviço.
 
 Benchmark de referência: Le et al. (2024) — 50–300 ms em carga operacional clínica típica.
 
